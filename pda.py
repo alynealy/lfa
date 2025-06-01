@@ -1,35 +1,136 @@
-Oferte de bonus fără depunere 2025
-Rotiri Gratuite si Speciale Garantate 
-Rotiri Gratuite si Speciale Garantate Fara Depunere si Fara Rulaj ✔️ Revendică oferta exclusiva si bonus fara depunere ✔️
-GRATIS! Rotiri si Speciale Garantate
-Casino Bonus Fără Depunere România: ✔️ Activează acum 4500 Rotiri Gratuite. Joacă la casino gratis cu bonus fără depunere 2025!
-Top 45 Casino Online România 🏅 Vezi cele mai bune cazinouri online cu licență în România în mai 2025 ✅ Bonusuri exclusive cazinouri noi re...
-Prinde aici bonus fără depunere 2025 la un casino online și câștigă rotiri gratuite fără depunere la păcănelele preferate!
-Bonusuri Casino. FREE SPINS și Jackpoturi în creștere.
-Peste 900 de jocuri Casino online cu Jackpoturi în creștere, niveluri bonus și un clasament al câștigurilor. Jocuri exclusive 7777 Gaming.
-Intră în universul Casino Online Princess și descoperă cele mai populare jocuri de cazino din România! ✓ Înscrie-te și profită de bonusuri exclusive: 930 Rotiri Gratuite și 3.000 LEI!
-Player.ro te așteaptă cu pachet de bun venit, rotiri gratuite și bonusuri pe măsura! ⭐ Ai parte de o nouă promoție în fiecare zi! ➤ Profita acum!
-Promotii Player.ro » Profita de o noua promotie in fiecare zi! | Player Ro
-Obține 100 de rotiri gratuite fără depunere la Shining Crown Clover Chance de la EGT Digital! Creează-ți un cont, validează documentele și începe să câștigi fără risc. Descoperă detalii acum!
- 100 Rotiri Gratuite Fără Depunere | CashPot Casino
+import json
+from collections import deque
 
-🔥 Cel mai nou bonus la înregistrare fără depunere 222 Rotiri Gratuite 🤑 Cel mai mare bonus bun venit fără depunere 777 Rotiri Gratuite ✨ Bonus fără depunere și fără rulaj 150 Rotiri Gratuite ⭐ Bonus casino fără verificare 77 Rotiri Gratuite Calculează Valoarea Bonusurilor de la SuperCazino Ce Bonusuri Fără Depunere Găsesti pe Supercazino
+def load_config(config_file):
+    """Load and validate PDA configuration"""
+    with open(config_file) as f:
+        config = json.load(f)
+  
+    required_fields = ['states', 'input_alphabet', 'stack_alphabet', 
+                      'start_state', 'initial_stack_symbol', 'accept_states', 
+                      'transitions']
+    for field in required_fields:
+        if field not in config:
+            raise ValueError(f"Missing required field: {field}")
 
+    config['states'] = set(config['states'])
+    config['input_alphabet'] = set(config['input_alphabet'])
+    config['stack_alphabet'] = set(config['stack_alphabet'])
+    config['accept_states'] = set(config['accept_states'])
+    
+    transitions = {}
+    for t in config['transitions']:
+        key = (t['current_state'], t['input'], t['pop'])
+        val = (t['next_state'], t['push'])
 
--> 
-Inregistereaza-te si obtine oferta de bonus fara depunere exclusiva : (oferta) de rotiri gratuite la Wacko casino, cazino-ul cu castiguri garantate, fara risc si free spins, dar si promotii si jackpot-uri mari, pe masura. Înscrie-te și  incepe sa profiti  de oferta de bun venit : 5500 lei gratis si 500 de rotiri gratuite cu sanse de castig mai mari decat la loteria romana.
+        if t['current_state'] not in config['states']:
+            raise ValueError(f"Invalid current state: {t['current_state']}")
+        if t['input'] != 'epsilon' and t['input'] not in config['input_alphabet']:
+            raise ValueError(f"Invalid input symbol: {t['input']}")
+        if t['pop'] not in config['stack_alphabet']:
+            raise ValueError(f"Invalid pop symbol: {t['pop']}")
+        if t['next_state'] not in config['states']:
+            raise ValueError(f"Invalid next state: {t['next_state']}")
+        for sym in t['push']:
+            if sym not in config['stack_alphabet']:
+                raise ValueError(f"Invalid push symbol: {sym}")
 
-Înregistrează-te și obține oferta de bonus fără depunere exclusivă: 87 rotiri gratuite la Wacko Casino – cazinoul cu câștiguri garantate, fără risc, cu free spins, dar și promoții și jackpoturi mari, pe măsură. Înscrie-te și începe să profiți de oferta de bun venit: 5.500 lei gratuit și 500 de rotiri gratuite.
+        if key not in transitions:
+            transitions[key] = []
+        transitions[key].append(val)
+    
+    config['transitions'] = transitions
+    return config
 
-Înregistrează-te și obține oferta de bonus fără depunere exclusivă: 87 rotiri gratuite la Wacko Casino – cazinoul cu câștiguri garantate, fără risc, cu free spins, dar și promoții și jackpoturi mari, pe măsură. Înscrie-te și începe să profiți de oferta de bun venit: 5.500 lei gratuit și 500 de rotiri gratuite.
+def process_input(pda, input_str):
+    """Simulate PDA execution with detailed output"""
+    # Validate input characters
+    for char in input_str:
+        if char not in pda['input_alphabet']:
+            print(f"Invalid input character: '{char}'")
+            return False
 
-Înregistrează-te și obține oferta de bonus fără depunere exclusivă: 500 de Lei freebet la Wacko Casino Sport – cazinoul cu câștiguri garantate, fără risc, cu free spins, dar și promoții și jackpoturi mari, pe măsură. Înscrie-te și începe să profiți de oferta de bun venit: 5.500 lei gratuit și 500 de rotiri gratuite, cu șanse de câștig mai mari decât la Loteria Română!
+    stack = [pda['initial_stack_symbol']]
+    queue = deque([(pda['start_state'], list(input_str), stack, [])])
+    visited = set()
+    
+    print(f"\nProcessing: '{input_str}'")
+    print("=" * 40)
+    
+    while queue:
+        current_state, remaining_input, stack, path = queue.popleft()
+        
+        print(f"State: {current_state}")
+        print(f"Remaining: '{''.join(remaining_input)}'")
+        print(f"Stack: {''.join(stack[::-1]) if stack else 'ε'}")
+        if path:
+            print("Path:")
+            for step in path:
+                print(f"  {step}")
+        print("-" * 40)
+        
+        if not remaining_input and current_state in pda['accept_states']:
+            print("\nACCEPTED")
+            return True
+ 
+        config_id = (current_state, tuple(remaining_input), tuple(stack))
+        if config_id in visited:
+            continue
+        visited.add(config_id)
+        
+        input_symbol = remaining_input[0] if remaining_input else 'epsilon'
+        pop_symbol = stack[-1] if stack else None
+        
+        _process_transition(pda, queue, current_state, input_symbol, pop_symbol,
+                               remaining_input, stack, path)
 
-<meta name="description" content="Înregistrează-te și obține oferta de bonus fără depunere exclusivă: 99 rotiri gratuite la Wacko Casino – cazinoul cu câștiguri garantate, fără risc, cu free spins, dar și promoții și jackpoturi mari, pe măsură. Înscrie-te și începe să profiți de oferta de bun venit: 5.500 lei gratuit și 500 de rotiri gratuite, cu șanse de câștig mai mari decât la Loteria Română!
-">
+        _process_transition(pda, queue, current_state, 'epsilon', pop_symbol,
+                               remaining_input, stack, path)
+    
+    print("\nREJECTED")
+    return False
 
-<!-- Open Graph Description pentru rețele sociale -->
-<meta property="og:description" content="Înregistrează-te și obține oferta de bonus fără depunere exclusivă: 99 rotiri gratuite la Wacko Casino – cazinoul cu câștiguri garantate, fără risc, cu free spins, dar și promoții și jackpoturi mari, pe măsură. Înscrie-te și începe să profiți de oferta de bun venit: 5.500 lei gratuit și 500 de rotiri gratuite, cu șanse de câștig mai mari decât la Loteria Română!
-">
+def _process_transition(pda, queue, current_state, input_sym, pop_sym,
+                      remaining_input, stack, path):
+    """Handle transitions and add new configurations to queue"""
+    key = (current_state, input_sym, pop_sym)
+    if key not in pda['transitions']:
+        return
 
-  <meta name="keywords" content="HTML, CSS, JavaScript">
+    remaining = remaining_input.copy()
+    if input_sym != 'epsilon' and remaining:
+        remaining.pop(0)
+
+    for next_state, push_symbols in pda['transitions'][key]:
+        new_stack = stack.copy()
+        if new_stack:
+            new_stack.pop()
+        new_stack.extend(reversed(push_symbols))
+        
+        new_path = path + [
+            f"{current_state} --{input_sym},{pop_sym}/{''.join(push_symbols)}--> {next_state}"
+        ]
+        queue.append((next_state, remaining, new_stack, new_path))
+
+def main():
+    """Interactive PDA tester"""
+    try:
+        pda = load_config('config.json')
+    except Exception as e:
+        print(f"Config error: {e}")
+        return
+
+    print("PDA Interactive Tester")
+    while True:
+        input_str = input("\nEnter input string (q to quit): ").strip()
+        if input_str.lower() == 'q':
+            break
+        if not all(c in pda['input_alphabet'] for c in input_str):
+            invalid = [c for c in input_str if c not in pda['input_alphabet']]
+            print(f"Invalid characters: {invalid}")
+            continue
+            
+        process_input(pda, input_str)
+
+if __name__ == "__main__":
+    main()
