@@ -1,0 +1,71 @@
+{
+  "states": ["q0", "q1", "q2", "q_accept", "q_reject"],
+  "tape_alphabet": ["0", "1", "X", "_"],
+  "input_alphabet": ["0", "1"],
+  "transitions": {
+    "q0,0": {
+      "next_state": "q1",
+      "write_symbol": "X",
+      "move_direction": "R"
+    },
+    "q0,1": {
+      "next_state": "q_reject",
+      "write_symbol": "1",
+      "move_direction": "S"
+    },
+    "q0,_": {
+      "next_state": "q_accept",
+      "write_symbol": "_",
+      "move_direction": "S"
+    },
+    "q0,X": {
+      "next_state": "q0",
+      "write_symbol": "X",
+      "move_direction": "R"
+    },
+    "q1,0": {
+      "next_state": "q1",
+      "write_symbol": "0",
+      "move_direction": "R"
+    },
+    "q1,1": {
+      "next_state": "q2",
+      "write_symbol": "X",
+      "move_direction": "L"
+    },
+    "q1,X": {
+      "next_state": "q1",
+      "write_symbol": "X",
+      "move_direction": "R"
+    },
+    "q1,_": {
+      "next_state": "q_reject",
+      "write_symbol": "_",
+      "move_direction": "S"
+    },
+    "q2,0": {
+      "next_state": "q2",
+      "write_symbol": "0",
+      "move_direction": "L"
+    },
+    "q2,1": {
+      "next_state": "q2",
+      "write_symbol": "1",
+      "move_direction": "L"
+    },
+    "q2,X": {
+      "next_state": "q0",
+      "write_symbol": "X",
+      "move_direction": "R"
+    },
+    "q2,_": {
+      "next_state": "q_reject",
+      "write_symbol": "_",
+      "move_direction": "S"
+    }
+  },
+  "start_state": "q0",
+  "accept_states": ["q_accept"],
+  "reject_states": ["q_reject"],
+  "blank_symbol": "_"
+}
